@@ -1,6 +1,8 @@
 package com.rokunana.dev.views {
-	import flash.display.BitmapData;
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	/**
 	 * 様々なBitmapを提供する
@@ -8,20 +10,64 @@ package com.rokunana.dev.views {
 	 */
 	public class Figure extends Bitmap {
 		
-		public function circle(radius : Number, color : uint = 0xFF0000,background:uint=0x00FFFFFF):BitmapData{
-			dispose();
-			return bitmapData = new Circle(radius, color,background);
+		public function Figure(bitmapData:BitmapData=null) {
+			this.bitmapData = bitmapData;
+			smoothing = true;
+			cacheAsBitmap = true;
 		}
 		
-		public function doughnut(radius : Number,insideRatio:Number=.5, color : uint = 0xFF0000,background:uint=0x00FFFFFF):BitmapData{
+		/**
+		 * 円を描画
+		 * @param radius 半径
+		 * @param color 色
+		 * @param background 背景色
+		 */
+		public function circle(radius : Number, color : uint = 0xFF0000,background:uint=0x00FFFFFF):Figure{
 			dispose();
-			return bitmapData = new Doughnut(radius, insideRatio,color,background);
+			bitmapData = new Circle(radius, color,background);
+			return this;
+		}
+		
+		/**
+		 * ドーナツを描画
+		 * @param radius 半径
+		 * @param insideRatio 半径に対する内径の比
+		 * @param color 色
+		 * @param background 背景色
+		 */
+		public function doughnut(radius : Number,insideRatio:Number=.5, color : uint = 0xFF0000,background:uint=0x00FFFFFF):Figure{
+			dispose();
+			bitmapData = new Doughnut(radius, insideRatio,color,background);
+			return this
+		}
+		
+		/**
+		 * 矩形を描画
+		 * @param width　幅
+		 * @param height 高
+		 */
+		public function box(width:Number, height:Number,color:uint=0xFF0000,background:uint=0x00FFFFFF):Figure{
+			dispose();
+			bitmapData = new Box(width, height,color,background)
+			return this
+		}
+		
+		public function clip(rect:Rectangle):Figure{
+			var c:BitmapData = new BitmapData(rect.width, rect.height,true,0x00000000);
+			c.copyPixels(bitmapData.clone(), rect, new Point(0,0));
+			dispose();
+			bitmapData = c; 
+			return this;
 		}
 		
 		public function dispose() : void {
 			if(!bitmapData)return;
 			bitmapData.dispose();
 			bitmapData = null;
+		}
+		
+		public function clone():Figure{
+			return new Figure(bitmapData.clone())
 		}
 		
 		
@@ -43,6 +89,30 @@ class GraphicData extends BitmapData{
 
 	public function get background() : uint {
 		return _background;
+	}
+	
+}
+/**
+ * 矩形
+ */
+class Box extends GraphicData{
+	
+	private var _color : uint;
+	
+	public function Box(width:Number,height:Number,color : uint = 0xFF0000,background:uint=0x00FFFFFF) {
+		super(drawBox(0,0,width,height,color),background)
+	}
+
+	protected function drawBox(x : Number, y : Number, width : Number, height : Number,color:Number,alpha:Number=1) : DisplayObject {
+		var shape:Shape = new Shape();
+		_color = color;
+		shape.graphics.beginFill(color,alpha)
+		shape.graphics.drawRect(x, y, width, height);
+		return shape;
+	}
+
+	public function get color() : uint {
+		return _color;
 	}
 	
 }
