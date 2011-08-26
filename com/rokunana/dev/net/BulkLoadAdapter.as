@@ -1,4 +1,5 @@
 package com.rokunana.dev.net {
+	import br.com.stimuli.loading.loadingtypes.LoadingItem;
 	import flash.events.EventDispatcher;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
@@ -59,8 +60,10 @@ package com.rokunana.dev.net {
 		private function progressHandler(event : BulkProgressEvent) : void {
 			for each( var request:RemoteData in dic){
 				if(!request)continue;
-				if(loader.get(request.url).isLoaded){
-					request.data = loader.getContent(request.url);
+				var item:LoadingItem = loader.get(request.url);
+				if(!item)continue;
+				if(item.isLoaded){
+					request.data = loader.getContent(request.url,true);					
 					remove(request);
 				}else{
 					request.bytesLoaded = loader.get(request.url).bytesLoaded;
