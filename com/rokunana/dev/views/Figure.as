@@ -10,10 +10,10 @@ package com.rokunana.dev.views {
 	 */
 	public class Figure extends Bitmap {
 		
-		public function Figure(bitmapData:BitmapData=null) {
+		public function Figure(bitmapData:BitmapData=null,cacheAsBitmap:Boolean=false,smoothing:Boolean=false) {
 			this.bitmapData = bitmapData;
-			smoothing = true;
-			cacheAsBitmap = true;
+			this.smoothing = smoothing;
+			this.cacheAsBitmap = cacheAsBitmap;
 		}
 		
 		/**
@@ -22,9 +22,9 @@ package com.rokunana.dev.views {
 		 * @param color 色
 		 * @param background 背景色
 		 */
-		public function circle(radius : Number, color : uint = 0xFF0000,background:uint=0x00FFFFFF):Figure{
+		public function circle(radius : Number, color : uint = 0xFF0000,background:uint=0x00FFFFFF,alpha:Number=1):Figure{
 			dispose();
-			bitmapData = new Circle(radius, color,background);
+			bitmapData = new Circle(radius, color,background,alpha);
 			return this;
 		}
 		
@@ -126,8 +126,8 @@ class Circle extends GraphicData{
 	private var _color : uint;
 	
 	
-	public function Circle(radius : Number, color : uint = 0xFF0000,background:uint=0x00FFFFFF) {
-		super(drawCircle(radius,radius,radius,color),background)
+	public function Circle(radius : Number, color : uint = 0xFF0000,background:uint=0x00FFFFFF,alpha:Number=1) {
+		super(drawCircle(radius,radius,radius,color,alpha),background)
 	}
 
 	protected function drawCircle(x:Number,y:Number,radius:Number,color:uint,alpha:Number=1) : Shape {
