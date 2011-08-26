@@ -1,32 +1,35 @@
 package com.rokunana.dev.net {
-	import br.com.stimuli.loading.loadingtypes.LoadingItem;
-	import flash.events.EventDispatcher;
-	import flash.events.Event;
-	import flash.events.IEventDispatcher;
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.BulkProgressEvent;
+	import br.com.stimuli.loading.loadingtypes.LoadingItem;
 
+	import com.rokunana.dev.collections.ArrayIterator;
+	import com.rokunana.dev.collections.IIterator;
 	import com.rokunana.dev.model.RemoteData;
 
-	import flash.utils.Proxy;
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 
 
 	/**
 	 * @author kaede
 	 */
 	 [Event(name="complete", type="flash.events.Event")];
-	public class BulkLoadAdapter extends Proxy implements IEventDispatcher {
+	public class BulkLoadAdapter implements IEventDispatcher {
 		
 		private var loader:BulkLoader;
 		private var dispatcher:EventDispatcher;
-		private var dic:Object;
+		private var dic:Array;
+		private var i:IIterator;
 
 		public function BulkLoadAdapter(name:String) {
 			dispatcher = new EventDispatcher();
 			loader = BulkLoader.getLoader(name) || new BulkLoader(name);
 			loader.addEventListener(BulkProgressEvent.PROGRESS, progressHandler);
 			loader.addEventListener(BulkProgressEvent.COMPLETE, complteHandler);
-			dic = {};
+			dic = [];
+			i = new ArrayIterator(dic);
 		}
 
 		private function complteHandler(event : BulkProgressEvent) : void {
@@ -38,32 +41,33 @@ package com.rokunana.dev.net {
 		}
 
 		public function add(request:RemoteData,type:String="image") : void {
-			dic[request.url] = request;
+			dic.push(request);
 			if(!request.data){
 				loader.add(request.url,{type:type});
-				
 			}
 		}
 		
 		public function remove(request : RemoteData) : void {
-			dic[request.url] = null;
+			dic.splice(dic.indexOf(request), 1);
 		}
 
 		public function has(request : RemoteData) : Boolean {
-			return Boolean(dic[request.url]);
+			return dic.indexOf(request) >= 0
 		}
 		
 		public function get(request:RemoteData):RemoteData{
-			return dic[request.url]
+			return dic[dic.indexOf(request)]
 		}
 
 		private function progressHandler(event : BulkProgressEvent) : void {
-			for each( var request:RemoteData in dic){
-				if(!request)continue;
+			i.reset();
+			while(i.hasNext()){
+				var request:RemoteData = i.next() as RemoteData;
 				var item:LoadingItem = loader.get(request.url);
 				if(!item)continue;
 				if(item.isLoaded){
-					request.data = loader.getContent(request.url,true);					
+					request.data = loader.getContent(request.url,true);
+					loader.remove(request.url)		
 					remove(request);
 				}else{
 					request.bytesLoaded = loader.get(request.url).bytesLoaded;
