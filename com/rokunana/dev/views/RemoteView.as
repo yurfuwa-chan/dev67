@@ -1,7 +1,8 @@
 package com.rokunana.dev.views {
 	import com.rokunana.dev.model.IModel;
-	import flash.display.DisplayObject;
 	import com.rokunana.dev.model.RemoteData;
+
+	import flash.display.DisplayObject;
 
 	/**
 	 * @author kaede
@@ -22,12 +23,17 @@ package com.rokunana.dev.views {
 
 		override protected function update() : void {
 			super.update();
-			addChild(_display = _model.getDisplay())
+			_display = _model.getDisplay();
+			addChild(_display)
 		}
 		
 		override public function set model(model : IModel) : void {
 			_model = model as RemoteData;
 			super.model = model;
+		}
+
+		public function get view() : DisplayObject {
+			return _display;
 		}
 		
 		
