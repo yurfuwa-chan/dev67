@@ -1,4 +1,5 @@
 package com.rokunana.dev.model {
+	import flash.display.BitmapData;
 	import flash.events.ProgressEvent;
 	import flash.display.Sprite;
 	import flash.display.Bitmap;
@@ -78,6 +79,16 @@ package com.rokunana.dev.model {
 
 		public function set bytesTotal(bytesTotal : int) : void {
 			_bytesTotal = bytesTotal;
+		}
+		
+		public function clone():RemoteData{
+			var c:RemoteData = new RemoteData(_url);
+			if(this._data is Bitmap){
+				c._bytesLoaded = this.bytesLoaded;
+				c._bytesTotal = this.bytesTotal;
+				c._data = new Bitmap(Bitmap(_data).bitmapData.clone())
+			}
+			return c
 		}
 	}
 }
