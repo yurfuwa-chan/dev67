@@ -6,10 +6,12 @@ package com.rokunana.dev.collections {
 	public class IteratorLinkList implements IIterator {
 		
 		private var _iterator : IIterator;
-		private var head:Link;
-		private var _current:Link;
+		private var _head:Link;
+		private var _current : Link;
+		private var _loop : Boolean;
 		
-		public function IteratorLinkList(iterator : IIterator):void {
+		public function IteratorLinkList(iterator : IIterator,loop:Boolean=false):void {
+			this._loop = loop;
 			this.iterator = iterator;
 		}
 
@@ -17,7 +19,11 @@ package com.rokunana.dev.collections {
 			_current = null;
 			while(_iterator.hasNext()) {
 				var link : Link = new Link(_iterator.next(), link);
-				if(!_current)head = _current = link;
+				if(!_current)_head = _current = link;
+			}
+			if(loop){
+				_head.prev = link;
+				link.next = _head; 
 			}
 		}
 		
@@ -36,7 +42,7 @@ package com.rokunana.dev.collections {
 		}
 
 		public function reset() : void {
-			_current = head;
+			_current = _head;
 		}
 
 		public function hasNext() : Boolean {
@@ -57,6 +63,16 @@ package com.rokunana.dev.collections {
 				init();
 			}
 		}
+
+		public function get loop() : Boolean {
+			return _loop;
+		}
+
+		public function get head() : Link {
+			return _head;
+		}
+		
+		
 		
 		
 		
