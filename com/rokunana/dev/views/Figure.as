@@ -85,6 +85,7 @@ class GraphicData extends BitmapData{
 	public function GraphicData(target:DisplayObject,background:uint=0x00FFFFFF) {
 		super(target.width,target.height,true,background);
 		draw(target);
+		lock();
 	}
 
 	public function get background() : uint {
