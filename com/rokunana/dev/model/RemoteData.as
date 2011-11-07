@@ -1,11 +1,10 @@
 package com.rokunana.dev.model {
-	import flash.display.BitmapData;
-	import flash.events.ProgressEvent;
-	import flash.display.Sprite;
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.ProgressEvent;
 
 	/**
 	 * @author kaede
@@ -90,5 +89,10 @@ package com.rokunana.dev.model {
 			}
 			return c
 		}
+
+		override public function toString() : String {
+			return "[RemoteData url="+url+"]";
+		}
+
 	}
 }
