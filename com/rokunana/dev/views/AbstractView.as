@@ -7,7 +7,7 @@ package com.rokunana.dev.views {
 	 * Modelの変更に即応するView
 	 * @author kaede
 	 */
-	public class AbstractView extends Sprite {
+	public class AbstractView extends Sprite implements IView {
 		
 		private var _model : IModel;
 		
