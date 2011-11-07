@@ -45,6 +45,10 @@ package com.rokunana.dev.model {
 		protected function update() : void {
 			dispatchEvent(new Event(Event.CHANGE));
 		}
+		
+		protected function select() : void {
+			dispatchEvent(new Event(Event.SELECT));
+		}
 
 		public function reset() : void {
 			_iterator.reset();
@@ -52,13 +56,13 @@ package com.rokunana.dev.model {
 
 		public function next() : Object {
 			var obj:Object = _iterator.next();
-			update();
+			select();
 			return obj;
 		}
 
 		public function prev() : Object {
 			var obj:Object = _iterator.prev();
-			update();
+			select();
 			return obj
 		}
 
