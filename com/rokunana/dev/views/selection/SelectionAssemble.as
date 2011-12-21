@@ -41,6 +41,12 @@ package com.rokunana.dev.views.selection {
 				dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
+		
+		public function clear():void{
+			arr.forEach(function(item:Selection,i:int,_arr:Array):void{
+				item.clear();
+			})
+		}
 
 		/**
 		 * 全てのSelectionが選択状態か判定する

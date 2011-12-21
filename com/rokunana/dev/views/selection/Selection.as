@@ -45,6 +45,14 @@ package com.rokunana.dev.views.selection {
 			dispatchEvent(new Event(Event.CHANGE));
 		}
 		
+		public function clear():void{
+			if(_target is IDefeasibleSelection){
+				IDefeasibleSelection(_target).dissolve();
+			}
+			_target = null;
+			_value = null;
+		}
+		
 		/**
 		 * 選択オブジェクトの削除
 		 * @param target 選択オブジェクトの削除
