@@ -28,5 +28,12 @@ package com.rokunana.dev.utils {
 			return (isNaN(n)) ? Boolean(str == ("true")) : Boolean(n);
 		}
 		
+		/**
+		 * [Object Hoge]からHogeを抜き出す
+		 */
+		static public function getClassName(object:Object):String{
+			return object.toString().match(/\[object ([a-z|A-Z|_|\d]+)\]/)[1];
+		}
+		
 	}
 }
