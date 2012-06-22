@@ -33,7 +33,9 @@ package com.rokunana.dev.views {
 		}
 
 		protected function init() : void {
-			_model.addEventListener(Event.CHANGE, changeHandler)
+			if(_model != null){
+				_model.addEventListener(Event.CHANGE, changeHandler)
+			}
 			dispatchEvent(new Event(Event.INIT));
 		}
 
