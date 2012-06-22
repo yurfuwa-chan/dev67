@@ -89,6 +89,11 @@ package com.rokunana.dev.model {
 			}
 			return c
 		}
+		
+		public function destoroy():void{
+			Bitmap(_data).bitmapData.dispose();
+			Bitmap(_data).bitmapData = null;
+		}
 
 		override public function toString() : String {
 			return "[RemoteData url="+url+"]";

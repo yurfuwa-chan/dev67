@@ -31,6 +31,11 @@ package com.rokunana.dev.views {
 			_model = model as RemoteData;
 			super.model = model;
 		}
+		
+		public function destory():void{
+			model = null;
+			destory();
+		}
 
 		public function get view() : DisplayObject {
 			return _display;
